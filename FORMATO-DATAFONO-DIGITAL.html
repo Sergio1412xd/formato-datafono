@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formato de Asignación de Datafono - KFC</title>
+
+    <script src="https://cdn.jsdelivr.net/npm/signature_pad@4.0.0/dist/signature_pad.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+    <style>
+        /* Variables CSS para facilitar cambios de marca */
+        :root {
+            --kfc-red: #E21C1C;
+            --kfc-dark-red: #c91a32;
+            --bg-color: #f8f8f8;
+            --container-bg: #fff;
+            --border-color: #ddd;
+            --shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background: var(--bg-color);
+            margin: 0;
+            padding: 40px 20px;
+            color: #333;
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 750px;
+            margin: auto;
+            background: var(--container-bg);
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: var(--shadow);
+            border-top: 5px solid var(--kfc-red);
+        }
+
+        h3 {
+            text-align: center;
+            color: var(--kfc-red);
+            font-size: 1.8em;
+            margin-bottom: 5px;
+            text-transform: uppercase;
+        }
+
+        h4 {
+            text-align: center;
+            color: #555;
+            margin-top: 20px;
+            margin-bottom: 10px;
+            border-bottom: 2px solid #eee;
+            padding-bottom: 5px;
+        }
+        
+        p {
+            text-align: justify;
+            font-size: 0.95em;
+            margin-bottom: 15px;
+        }
+
+        .subtitle {
+            text-align: center;
+            font-size: 1.1em;
+            font-weight: bold;
+            color: #666;
+            margin-bottom: 20px;
+        }
+
+        /* ESTILO PARA GRUPO DE FORMULARIO */
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+            color: #444;
+            font-size: 0.9em;
+        }
+
+        input[type="text"], select {
+            width: 100%;
+            padding: 10px 12px;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            margin-top: 5px;
+            box-sizing: border-box;
+            font-size: 1em;
+            transition: border-color 0.3s, box-shadow 0.3s;
+        }
+
+        input[type="text"]:focus, select:focus {
+            border-color: var(--kfc-red);
+            box-shadow: 0 0 5px rgba(226, 28, 28, 0.3);
+            outline: none;
+        }
+        
+        /* SECCIÓN LEGAL DESTACADA */
+        .legal-section {
+            background: #fffafa; /* Fondo muy claro para destacar */
+            border: 1px solid #f0e4e4;
+            border-left: 5px solid var(--kfc-red); /* Borde lateral de marca */
+            padding: 15px;
+            margin-bottom: 30px;
+            border-radius: 4px;
+        }
+        
+        .legal-section h4 {
+            color: var(--kfc-dark-red);
+            border-bottom: none;
+            padding-bottom: 0;
+            text-align: left;
+        }
+
+        /* ÁREA DE FIRMA */
+        .signature-area {
+            text-align: center;
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px dashed var(--border-color);
+        }
+
+        #canvas {
+            border: 2px dashed #000;
+            width: 100%;
+            max-width: 400px;
+            height: 180px;
+            display: block;
+            margin: 15px auto 10px auto;
+            border-radius: 4px;
+            background-color: #fff;
+        }
+
+        /* BOTONES DE ACCIÓN */
+        #buttons {
+            margin-top: 20px;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 12px;
+        }
+        
+        #buttons button {
+            background: var(--kfc-red);
+            color: #fff;
+            border: none;
+            border-radius: 50px;
+            padding: 10px 20px;
+            cursor: pointer;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            transition: background 0.3s, transform 0.1s;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+            font-size: 0.9em;
+        }
+        
+        #buttons button:hover {
+            background: var(--kfc-dark-red);
+            transform: translateY(-1px);
+            box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+        }
+
+        /* Estilo específico para el botón de limpiar */
+        #buttons button:first-child {
+            background: #6c757d;
+        }
+        #buttons button:first-child:hover {
+            background: #5a6268;
+        }
+        
+        /* Media query para dispositivos más pequeños */
+        @media (max-width: 600px) {
+            .container {
+                padding: 20px;
+                border-radius: 0;
+                box-shadow: none;
+            }
+            body {
+                padding: 0;
+            }
+            #buttons button {
+                width: 100%;
+                margin: 5px 0;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <img src="https://upload.wikimedia.org/wikipedia/en/thumb/b/bf/KFC_style="display: block; margin: 0 auto 20px auto; width: 80px;">
+    
+    <h3>CONTROL INTERNO DE ASIGNACIÓN DE DATAFONOS</h3>
+    <p class="subtitle">AUTORIZACIÓN PARA EL TRATAMIENTO DE DATOS PERSONALES</p>
+
+    <div class="legal-section" id="textoLegal">
+        <p>En cumplimiento de la Ley 1581 de 2012 "Por la cual se dictan las disposiciones generales para la protección de datos personales" el Decreto 1377 de 2013 "Por el cual se reglamenta parcialmente la Ley 1581 de 2012, asi como demás normatividad vigente y futura en la materia; con el diligenciamiento de y firma del presente documento, usted autoriza de manera previa, libre, expresa y voluntaria a INVERSIONES INT COLOMBIA S.A.S. para el Tratamiento (recolección, almacenamiento, uso, circulación y supresión) de todos los datos personales que sean suministrados de acuerdo con las finalidades que se indican en la Politica para el Tratamiento de Datos Personales de INVERSIONES INT COLOMBIA S.A.S especialmente aquellos relacionados con su Hoja de Vida, y funciones como trabajador y/o contratista de INVERSIONES INT COLOMBIA S.A.S.</p>
+        
+        <p>Esta autorización permitirá a INVERSIONES INT COLOMBIA S.A.S. a desarrollar actividades propias de su objeto social, asi como, recolectar, proteger, compendiar en bases de datos y gestionar sus datos personales de conformidad con la Política para el Tratamiento de Datos Personales, la cual puede ser consultada en la siguiente dirección web: <a href="http://www.kfc.co/Kfc-Datos-Personales.html">http://www.kfc.co/Kfc-Datos-Personales.html</a>. En dicha politica podrá consultar sus derechos y deberes como Titular de los datos personales.</p>
+        
+        <h4>Aceptación Personal de Responsabilidad</h4>
+        <p>Declaro de manera libre y voluntaria que acepto la responsabilidad por el uso adecuado de los dispositivos individualizados en este documento, asi como cualquier otro que me hubiere sido entregado en el pasado con similares caracteristicas por parte de Inversiones INT Colombia SAS, La Compañia, por lo que conozco y entiendo la politica de manejo de datafonos y medios electrónicos de pago de La Compañia, de modo que cualquier desconocimiento de la misma será considerado como una falta grave, con las consecuencias para ello previstas en el Reglamento interno de Trabajo de Inversiones INT Colombia SAS. No obstante lo anterior. La Compañia queda facultada para ejercer las acciones correspondientes para obtener el pago de los perjuicios que se pudieres llegar a ocasionar con el desconocimiento de ta politica de manejo de datafonos y medios electrónicas de pago previamente enunciada, esto sin perjuicio de las demás acciones judiciales a que hubiere lugar.</p>
+    </div>
+
+    <div class="form-section">
+        <div class="form-group">
+            <label for="local">Nombre Local KFC:</label>
+            <select id="local" onchange="actualizarCorreoDestino()">
+                <option value="">--- Seleccione una tienda ---</option>
+                </select>
+        </div>
+        
+        <div class="form-group">
+            <label for="terminal">Terminal de Datafono:</label>
+            <input type="text" id="terminal" placeholder="Ingrese el número de terminal">
+        </div>
+        <div class="form-group">
+            <label for="telefono">Celular:</label>
+            <input type="text" id="telefono" placeholder="Ingrese número de contacto">
+        </div>
+        <div class="form-group">
+            <label for="firmaNombre">Nombre y Apellido del Domiciliario:</label>
+            <input type="text" id="firmaNombre" placeholder="Nombre completo">
+        </div>
+        <div class="form-group">
+            <label for="firmaCC">Cédula:</label>
+            <input type="text" id="firmaCC" placeholder="Número de identificación">
+        </div>
+    </div>
+
+    <div class="signature-area">
+        <h4>Firma del Domiciliario:</h4>
+        <canvas id="canvas"></canvas>
+        <div id="buttons">
+            <button onclick="limpiar()">Limpiar</button>
+            <button onclick="guardarFirma()">Guardar Firma</button>
+            <button onclick="generarPDF()"><i class="fas fa-file-pdf"></i> Generar y Descargar PDF</button>
+            <button onclick="enviarCorreo()">✉️ Enviar Correo</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    const { jsPDF } = window.jspdf;
+    const canvas = document.getElementById("canvas");
+    const signaturePad = new SignaturePad(canvas);
+    let firmaDataURL = "";
+    let pdfGenerated = false;
+
+    // INICIO LOGICA DE TIENDAS Y CORREOS (Se mantiene igual)
+    const tiendasYCorreos = {
+        "TOBERIN": "kfckcol068@kfc.co", "CEDRITOS": "kfckcol012@kfc.co", "SANTA FE BGTA": "kfckcol018@kfc.co", "ALCALA": "kfckcol069@kfc.co", "SAN RAFAEL": "kfckcol094@kfc.co", "QUIRIGUA": "kfckcol132@kfc.co", "PORTAL 80": "kfckcol043@kfc.co", "TITAN": "kfckcol066@kfc.co", "FLORESTA": "kfckcol040@kfc.co", "ISERRA 100": "kfckcol004@kfc.co", "CALLE 100": "kfckcol017@kfc.co", "CALLE 85": "kfckcol039@kfc.co", "ANDINO": "kfckcol170@kfc.co", "ATLANTIS": "kfckcol007@kfc.co", "AV CHILE": "kfckcol101@kfc.co", "SANTA PAULA": "kfckcol003@kfc.co", "UNICENTRO": "kfckcol037@kfc.co", "IMPERIAL": "kfckcol011@kfc.co", "SUBAZAR": "kfckcol113@kfc.co", "BULEVAR": "kfckcol021@kfc.co", "SHAIO": "kfckcol076@kfc.co", "SUBA PINAR": "kfckcol158@kfc.co", "COLINA": "kfckcol050@kfc.co", "HAYUELOS": "kfckcol027@kfc.co", "FONTIBON CENTRO": "kfckcol085@kfc.co", "VIVA FONTIBON (EXITO)": "kfckcol032@kfc.co", "ECOPLAZA": "kfckcol106@kfc.co", "MADRID": "kfckcol157@kfc.co", "PLAZA CLARO": "kfckcol141@kfc.co", "SALITRE": "kfckcol005@kfc.co", "GRAN ESTACION": "kfckcol062@kfc.co", "MODELIA": "kfckcol084@kfc.co", "NUESTRO BOGOTA": "kfckcol110@kfc.co", "CALIMA": "kfckcol016@kfc.co", "CALLE 33": "kfckcol041@kfc.co", "7-12.": "kfckcol088@kfc.co", "7-17.": "kfckcol153@kfc.co", "JIMENEZ": "kfckcol063@kfc.co", "DIVERPLAZA": "kfckcol096@kfc.co", "SANTA HELENITA": "kfckcol091@kfc.co", "FERIAS": "kfckcol064@kfc.co", "NORMANDIA": "kfckcol105@kfc.co", "METROPOLIS": "kfckcol002@kfc.co", "PARK WAY": "kfckcol075@kfc.co", "GALERIAS": "kfckcol025@kfc.co", "7 DE AGOSTO": "kfckcol136@kfc.co", "LOURDES": "kfckcol074@kfc.co", "CHAPINERO": "kfckcol057@kfc.co", "ANTARES": "kfckcol049@kfc.co", "BOSA": "kfckcol059@kfc.co", "TERREROS": "kfckcol061@kfc.co", "MERCURIO": "kfckcol171@kfc.co", "BOSA PIAMONTE": "kfckcol147@kfc.co", "TINTAL PLAZA": "kfckcol090@kfc.co", "CASTILLA": "kfckcol118@kfc.co", "PLAZA CENTRAL": "kfckcol048@kfc.co", "KENNEDY": "kfckcol073@kfc.co", "EDEN": "kfckcol092@kfc.co", "MULTIPLAZA": "kfckcol175@kfc.co", "ALTAVISTA USME": "kfckcol123@kfc.co", "TUNAL": "kfckcol036@kfc.co", "RESTREPO": "kfckcol065@kfc.co", "20 DE JULIO": "kfckcol148@kfc.co", "VENECIA": "kfckcol142@kfc.co", "ENSUEÑO": "kfckcol079@kfc.co", "VILLA DEL RIO CC": "kfckcol107@kfc.co", "VILLA DEL RIO CALLE": "kfckcol145@kfc.co", "CENTRO MAYOR": "kfckcol035@kfc.co", "P. AMERICAS 1": "kfckcol034@kfc.co", "P. AMERICAS 2": "kfckcol080@kfc.co", "UNICO VILLAO": "kfckcol026@kfc.co", "ÉXITO VIVA VILLAVICENCIO": "kfckcol033@kfc.co", "TESORO": "kfckcol006@kfc.co", "CALLE 10": "kfckcol014@kfc.co", "PREMIUM PLAZA": "kfckcol055@kfc.co", "LA CENTRAL": "kfckcol071@kfc.co", "JUNIN": "kfckcol072@kfc.co", "SANTA FE MED": "kfckcol019@kfc.co", "MAYORCA 1": "kfckcol042@kfc.co", "MAYORCA 2": "kfckcol070@kfc.co", "VIVA ENVIGADO": "kfckcol078@kfc.co", "ARKADIA": "kfckcol095@kfc.co", "FLORIDA": "kfckcol029@kfc.co", "PUERTA DEL NORTE": "kfckcol112@kfc.co", "FABRICATTO": "kfckcol119@kfc.co", "LA FLORIDA 2": "kfckcol167@kfc.co", "LAURELES": "kfckcol056@kfc.co", "UNICENTRO": "kfckcol109@kfc.co", "LA TERMINAL": "kfckcol124@kfc.co", "CALASANZ": "kfckcol139@kfc.co", "VIVA LAURELES": "kfckcol146@kfc.co", "PORTAL QUINDIO": "kfckcol030@kfc.co", "CENTRO ARMENIA": "kfckcol116@kfc.co", "PARQUE ARBOLEDA": "kfckcol108@kfc.co", "CENTRO PEREIRA": "kfckcol097@kfc.co", "DOSQUEBRADAS": "kfckcol154@kfc.co", "MALL PLAZA MANIZALES": "kfckcol089@kfc.co", "FUNDADORES": "kfckcol086@kfc.co", "CARTAGO": "kfckcol162@kfc.co", "UNICENTRO PEREIRA": "kfckcol104@kfc.co", "CANEY": "kfckcol100@kfc.co", "JARDIN PLAZA": "kfckcol115@kfc.co", "PALMETO": "kfckcol038@kfc.co", "UNICENTRO CALI": "kfckcol023@kfc.co", "CIUDAD CORDOBA": "kfckcol151@kfc.co", "PARQUE ARBOLATTA": "kfckcol169@kfc.co", "CHIPICHAPE": "kfckcol052@kfc.co", "UNICO CALI": "kfckcol022@kfc.co", "AV. SEXTA": "kfckcol053@kfc.co", "LLANO GRANDE": "kfckcol020@kfc.co", "VERSALLES PALMIRA": "kfckcol121@kfc.co", "HERRADURA": "kfckcol163@kfc.co", "SAN FERNANDO": "kfckcol135@kfc.co", "ROOSVELT": "kfckcol028@kfc.co", "COSMOCENTRO": "kfckcol114@kfc.co", "TERMINAL CALI": "kfckcol127@kfc.co", "PASO ANCHO": "kfckcol137@kfc.co", "MALL PLAZA CALI": "kfckcol165@kfc.co", "AMÉRICAS": "kfckcol045@kfc.co", "BUENAVISTA": "kfckcol044@kfc.co", "VIVA B/QUILLA": "kfckcol051@kfc.co", "PORTAL PRADO": "kfckcol060@kfc.co", "ACQUA": "kfckcol093@kfc.co", "VILLA DEL MAR": "kfckcol140@kfc.co", "SAN MARTIN": "kfckcol047@kfc.co", "CIUDAD AMURALLADA": "kfckcol077@kfc.co", "MALL PLAZA CASTILLO": "kfckcol082@kfc.co", "CARIBE PLAZA": "kfckcol122@kfc.co", "SAN PEDRO DE HEREDIA": "kfckcol168@kfc.co", "BUENAVISTA STM": "kfckcol111@kfc.co", "GUATAPURI": "kfckcol134@kfc.co", "PARQUE DE LOS NOVIOS": "kfckcol138@kfc.co", "MAYALES": "kfckcol150@kfc.co", "RODADERO": "kfckcol156@kfc.co", "PARQUE ALEGRA": "kfckcol133@kfc.co", "PLAZA DEL SOL": "kfckcol046@kfc.co", "UNICO B/Q": "kfckcol067@kfc.co", "CARRERA 43": "kfckcol081@kfc.co", "CARNAVAL": "kfckcol125@kfc.co", "LA CORDIALIDAD": "kfckcol159@kfc.co", "CARACOLI": "kfckcol098@kfc.co", "CABECERA": "kfckcol099@kfc.co", "MEGA MALL BUCARAMANGA": "kfckcol120@kfc.co", "CACIQUE": "kfckcol117@kfc.co", "JARDIN PLAZA CUCUTA": "kfckcol129@kfc.co", "VENTURA CUCUTA": "kfckcol130@kfc.co", "SAN SILVESTRE": "kfckcol172@kfc.co", "UNICO BUCARAMANGA": "kfckcol174@kfc.co", "CHIA": "kfckcol001@kfc.co", "FONTANAR": "kfckcol083@kfc.co", "PARQUE OSPINA CHIA": "kfckcol144@kfc.co", "VIVA TUNJA": "kfckcol103@kfc.co", "SOGAMOSO": "kfckcol161@kfc.co", "ZIPAQUIRA": "kfckcol160@kfc.co", "LA ESTACIÓN": "kfckcol031@kfc.co", "AV QUINTA": "kfckcol054@kfc.co", "SAN PEDRO PLAZA": "kfckcol102@kfc.co", "EL LEON GIRARDOT": "kfckcol143@kfc.co", "MELGAR": "kfckcol152@kfc.co", "ALAMEDAS": "kfckcol126@kfc.co", "NUESTRO MONTERIA": "kfckcol128@kfc.co", "GUACARI SINCELEJO": "kfckcol131@kfc.co", "VIVA SINCELEJO": "kfckcol149@kfc.co", "BUENAVISTA MONTERIA": "kfckcol164@kfc.co", "DISRTRITO 21": "kfckcol179@kfc.co", "PARQUE SOACHA": "kfckcol178@kfc.co"
+    };
+
+    function llenarSelectTiendas() {
+        const select = document.getElementById("local");
+        const nombresTiendas = Object.keys(tiendasYCorreos).sort();
+
+        nombresTiendas.forEach(nombre => {
+            const option = document.createElement("option");
+            option.value = nombre;
+            option.textContent = nombre;
+            select.appendChild(option);
+        });
+    }
+
+    let correoDestino = "logistica.domicilios@kfc.co";
+    
+    function actualizarCorreoDestino() {
+        const localSeleccionado = document.getElementById("local").value;
+        if (tiendasYCorreos[localSeleccionado]) {
+            correoDestino = tiendasYCorreos[localSeleccionado];
+        } else {
+            correoDestino = "logistica.domicilios@kfc.co";
+        }
+    }
+    
+    window.addEventListener("load", llenarSelectTiendas);
+    // FIN LOGICA DE TIENDAS Y CORREOS
+    
+    // Funciones de Canvas y PDF (se mantienen para compatibilidad)
+    function resizeCanvas() {
+        const ratio = Math.max(window.devicePixelRatio || 1, 1);
+        canvas.width = canvas.offsetWidth * ratio;
+        canvas.height = canvas.offsetHeight * ratio;
+        canvas.getContext("2d").scale(ratio, ratio);
+        signaturePad.clear();
+    }
+    window.addEventListener("resize", resizeCanvas);
+    resizeCanvas();
+
+    function limpiar(){ signaturePad.clear(); pdfGenerated=false; }
+    function guardarFirma(){
+        if(signaturePad.isEmpty()){ alert("Firme antes de guardar."); return; }
+        firmaDataURL=signaturePad.toDataURL("image/png"); alert("Firma guardada");
+    }
+
+    function generarPDF(){
+        const local=document.getElementById("local").value;
+        if(local === ""){ alert("Seleccione el Local KFC."); return; }
+        if(!firmaDataURL){ alert("Guarde la firma primero."); return; }
+        
+        const pdf = new jsPDF("p","mm","letter");
+        const margin=10; let y=15; const pageWidth=pdf.internal.pageSize.getWidth();
+
+        pdf.setFontSize(14);
+        pdf.text("CONTROL INTERNO DE ASIGNACION DE DATAFONOS", pageWidth/2,y,{align:"center"});
+        y+=7;
+        pdf.setFontSize(10);
+        pdf.text("AUTORIZACIÓN PARA EL TRATAMIENTO DE DATOS PERSONALES", pageWidth/2,y,{align:"center"});
+        y+=10;
+
+        // SE INCLUYE EL TEXTO LEGAL COMPLETO EN EL PDF
+        const texto=document.getElementById("textoLegal").innerText;
+        const lineas=pdf.splitTextToSize(texto, pageWidth-20);
+        pdf.text(lineas, margin, y);
+        y+=lineas.length*5 + 10;
+
+        
+        const terminal=document.getElementById("terminal").value;
+        const telefono=document.getElementById("telefono").value;
+        const nombre=document.getElementById("firmaNombre").value;
+        const cc=document.getElementById("firmaCC").value;
+
+        pdf.text(`Local: ${local}`,margin,y); y+=6;
+        pdf.text(`Terminal: ${terminal}`,margin,y); y+=6;
+        pdf.text(`Celular: ${telefono}`,margin,y); y+=6;
+        pdf.text(`Nombre: ${nombre}`,margin,y); y+=6;
+        pdf.text(`Cédula: ${cc}`,margin,y); y+=15;
+
+        pdf.addImage(firmaDataURL,"PNG",margin,y,80,40);
+        y+=45;
+        pdf.text("__________________________", margin,y);
+        y+=6;
+        pdf.text("Firma del Domiciliario", margin,y);
+
+        pdf.save(`Asignacion_Datafono_${local}_${nombre.replace(/\s/g, '_')}.pdf`);
+        pdfGenerated=true;
+    }
+
+    function enviarCorreo(){
+        const local=document.getElementById("local").value;
+        if(local === ""){ alert("Seleccione el Local KFC para el envío del correo."); return; }
+        if(!pdfGenerated){ alert("Genere el PDF antes de enviar."); return; }
+
+        const nombre=document.getElementById("firmaNombre").value;
+        
+        const destinatarios=correoDestino;
+        const cc="logistica.domicilios@kfc.co";
+        
+        const subject=`Asignación de Datafono - ${local}`;
+
+        const body=`Cordial Saludo,%0A%0APor medio del presente, comparto el formato de Datafono completo.%0A________________________________________%0A⚠️ ¡IMPORTANTE! Recordatorio de Adjunto ⚠️%0APor favor, NO OLVIDE ADJUNTAR el archivo PDF de este formato (una vez completado/firmado).%0A________________________________________%0A%0ANombre: ${nombre}%0ALocal: ${local}`;
+
+        window.location.href=`mailto:${destinatarios}?cc=${cc}&subject=${encodeURIComponent(subject)}&body=${body}`;
+    }
+</script>
+</body>
+</html>
